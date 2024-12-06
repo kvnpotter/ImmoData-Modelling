@@ -5,6 +5,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from gower import gower_matrix
 
+from classes.Visualiser import PCA_Visualiser
+
 # Class for handling data preprocessing
 
 class DataPreprocessor:
@@ -42,6 +44,9 @@ class DataPreprocessor:
         data['Number of facades'] = data['Number of facades'].astype('int64')
         
         self.data = data
+        print(f"Dataset loaded!\nThe loaded (original) dataset characteristics:\n")
+        print(self.data.info())
+
 
     def add_mean_income(self) -> None:
         """
@@ -97,13 +102,18 @@ class DataPreprocessor:
         data_postcodes['Wealth_index'] = data_postcodes['Wealth_index'].astype(float)
 
         self.data_income = data_postcodes
+        print(f"Data from SPF Finances added to dataset!\nCharacteristics of complete dataset:\n")
+        print(self.data_income.info())
 
-    def princomp(self, columns: list[str]) -> None:
+    def princomp(self, columns: list[str], n_components: int = 2) -> None:
         """
         Perform PCA for dimension reduction on the dataset with specified columns.
 
         : param columns: list[string]: List of column names to include in PCA.
+        : param n_components: int: Number of components to extract.
         """
+        #n_components = 
+
         # Get columns and scale data since sklearn pca on covariance
         data_pca = self.data_income[columns]
         scaler = StandardScaler()
@@ -113,6 +123,10 @@ class DataPreprocessor:
         pca= PCA()
         pca.fit(scaled_data)
 
+        # Instantiate Visualiser and create useful plots for analysis
+
+        pca_vis = PCA_Visualiser()
+
     def get_modelling_X(self, columns: list[str]) -> None:
         """
         Define predictors to use for modelling purposes
@@ -120,6 +134,8 @@ class DataPreprocessor:
         : param columns: list[string]: List of column names to retain for analysis.
         """
         self.modelling_data_X = self.data_income[columns].values
+        print(f"Modelling predictor dataset created with shape: {self.modelling_data_X.shape}\nAnd characteristics:\n")
+        print(self.modelling_data_X.info())
 
     def get_modelling_y(self, columns: list[str]= ['Price']) -> None:
         """
@@ -128,9 +144,11 @@ class DataPreprocessor:
         : param columns: list[string]: List of column names to retain for analysis.
         """
         self.modelling_data_y = self.data_income[columns].values
+        print(f"Modelling response dataset created with shape: {self.modelling_data_y.shape}")
 
     def calc_gower_dist(self) -> None:
         """
         Calculate the Gower distance between data points.
         """
         self.gowermat = gower_matrix(self.modelling_data_X)
+        print(f"Calculated Gower distance\nDistance matrix shape: {self.gowermat.shape}")
