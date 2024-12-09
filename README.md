@@ -89,30 +89,22 @@ conda env list #verify the environment was installed correctly
 
 ## **Usage**
 
-The repository contains following notebooks outlining the steps taken
-- DataCleaningKevin : All steps performed to clean the dataset
-- DataAnalysisKevin : All steps performed to analyse the dataset
-- DataAnalysisMaxim : Number qualitative/quantitative variables, transformation categorical - numerical, test effect of transformation method on model, percentage missing values, spatial analysis
-- correlation : Correlation and data visualization - Fatemeh
-
-In addition, the full, and cleaned, datasets can be found in the Data directory.
-When possible, tables and graphs from analysis results were added to the Results directory.
-
+The repository contains following files and directories
+- Model and Testing jupyter notebooks : Notebooks detailing modelling from loading the data to calculating evaluation metrics (to be completed)
+- main.py : Main script, as described above, performing modelling, recording evaluation metrics and pickling the best model.
+- (environment, license and readme files)
+- test_scripts directory : containing an attempt at writing a function for Gower distance calculation (function from the gower package used in final modelling)
+- Data directory : contains clean property data obtained from EDA project and income/tax data obtained from the belgian government (FOD Financiën/SPF Finances)
+- Results-Graphs directory : contains all outputs from visualisation and table creation methods, including evaluation metrics for 8 models
+- classes : contains separate modules for data preprocessing, modelling, evaluation and visualisation
 
 # Contributors 
 This project was completed by:
 1. [Kevin](https://github.com/kvnpotter)
-   - Data cleaning
-   - Distributions, normality, correlations, dimension reduction, differences in median price between groups
-3. [Maxim](https://github.com/MaximSchuermans)
-   - Transformation types from categorical to numerical values and test
-   - Missing values
-   - Spatial analysis of property price in Belgium
-5. [Fatemeh](https://github.com/Fatemeh992)
-   - Correlation and data visualization
+
 # **Timeline**
 
-Start project: 19/11/2024 09:30
-End project, with presentation of results: 22/11/2024 12:30
+Start project: 2/12/2024 09:30
+End project: 9/12/2024 16:30
 
 
