@@ -3,10 +3,12 @@
 ## 1. Code snippet of model instantiation
 
 ```python
+# Set up preprocessor, load data and add tax data
 dataset_2 = DataPreprocessor()
 dataset_2.load_data('./Data/Clean_data.csv')
 dataset_2.add_mean_income()
 
+# Prepare X and y datasets
 dataset_2.get_modelling_X(columns= ['PostalCodes', 'Subtype of property', "State of the building", 'Surface area of the plot of land', 'Number of rooms', 'Living Area', 'Number of facades'])
 dataset_2.get_modelling_y()
 
@@ -15,6 +17,7 @@ dataset_2.get_modelling_y()
 dataset_2.calc_gower_dist()
 dataset_2.gower_train_test()
 
+# Prepare modeller, get model parameters based on input, create model and evaluate using evaluator
 Gower_CV_model = Modeller()
 Gower_CV_model.set_parameters(distance= 'Gower')
 Gower_CV_model.get_model(dataset_2.X_train, dataset_2.y_train)
