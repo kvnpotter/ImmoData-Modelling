@@ -34,7 +34,43 @@ Gower_CV_model_eval.model_metrics('Raw_Numericals+PostalCode+CV+Gow')
 
 ![evaluation_metrics](./Results-Graphs/table.JPG)
 
-The list of features you've used and how you got it (to quickly understand if you've done data leakage)
-Accuracy computing procedure (on a test set? What split %, 80/20, 90/10, 50/50? k-fold cross?)
-Efficiency (training and inference time). The fastest the best (sustainability).
-a quick presentation of the final dataset (how many records, did you merge some datasets together? did you scrape again? what cleaning step you've done, scaling, encoding, cross-validation.. No need of visuals, just bullet points)
+## 3. Used features
+
+The features used to predict price include the following:
+- Postal code (obj) : post code in string format (not encoded as categorical because used Gower distance which automatically deals with this)
+- Subtype of property (obj) : idem above
+- State of the building (obj) : idem above
+- 'Surface area of the plot of land', 'Number of rooms', 'Living Area', 'Number of facades' (float and int) : raw data from ImmoWeb, numerical data was not scaled since a Gower distance matrix was used in final modelling. Gower distance calculates distances feature by feature, therefore eliminating issues with scaling.
+
+## 4. Accuracy computing 
+
+- Splitting data in 0.8 - 0.2 training - test sets
+- Using 5 fold CV gridsearch for hyperparameter tuning
+
+## 5. Efficiency
+
+Not evaluated due to time constraints
+
+## 6. Dataset
+
+The final dataset includes 10278 observations drawn from ImmoWeb. 
+In addition, tax/income data was added, but not used in the final model
+
+## 7. Feature importance - SHAP
+
+Not added due to time constraints
+
+## 8. Remarks
+
+From the research, modelling and selection, following remarks can be made:
+- The best model was chosen based on R2, MAE (most interesting for final estimation use of the model) and RMSE
+- Using PCA to decorrelate variables does not seem to strongly affect the model ; the choice was made to use the raw data to allow beter explanation of the variables included
+- USing Gower distance appears to slightly improve the model in some cases
+- KNN regression does not seem highy adapted to price prediction in this case
+- Distance metrics degrade with increasing number of predictors (also leading to the choice of using label encoding rather than one hot encoding)
+- High number of categories and class imbalance should be addressed in categorical predictors
+- This could also lead to more outliers to resolve ; may give errors in prediction and/or extrapolation when the final model is deployed
+- Increased training data could lead to better model performance
+- The model appears to suffer from overfitting, but CV was already used to minimiz this
+- The postal code does not seem an ideal predictor variable, however replacing it by tax/income data seems to lead to a slightly less reliable model. In deployment, if a user should enter a postalcode unknown to the model this will lead to issues, especially if the postal code is an important predictor (SHAP should be carried out).
+
