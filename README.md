@@ -97,6 +97,7 @@ The repository contains following files and directories
 - Data directory : contains clean property data obtained from EDA project and income/tax data obtained from the belgian government (FOD Financiën/SPF Finances)
 - Results-Graphs directory : contains all outputs from visualisation and table creation methods, including evaluation metrics for 8 models
 - classes : contains separate modules for data preprocessing, modelling, evaluation and visualisation
+- evaluation_report.md : a report evaluating the selected model
 
 # Contributors 
 This project was completed by:
