@@ -11,18 +11,26 @@ import shap
 
 # Classes for model evaluation
 
+
 class Evaluator:
     """
     Class implementing all methods to evaluate obtained models.
     """
 
-    def __init__(self, model: KNeighborsRegressor, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray) -> None:
+    def __init__(
+        self,
+        model: KNeighborsRegressor,
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        X_test: np.ndarray,
+        y_test: np.ndarray,
+    ) -> None:
         """
         Instantiate an object of class Evaluator
 
         : param model: KNeighborsRegressor: Model to evaluate.
         : param X_train: np.ndarray: Training X dataset. Distance matrix if Gower distance used.
-        : param y_train: np.ndarray: Training y dataset. 
+        : param y_train: np.ndarray: Training y dataset.
         : param X_test: np.ndarray: Testing X dataset. Distance matrix if Gower distance used.
         : param y_test: np.ndarray: Testing y dataset.
         """
@@ -54,10 +62,10 @@ class Evaluator:
             y_pred = self.y_pred_train
             n = self.X_train.shape[0]  # Number of samples
             p = self.X_train.shape[1]  # Number of features
-        
+
         r2 = r2_score(y_true, y_pred)
         return 1 - (1 - r2) * (n - 1) / (n - p - 1)
-    
+
     def smape(self, test: bool = True) -> float:
         """
         Calculate Symmetric Mean Absolute Percentage Error (sMAPE).
@@ -86,24 +94,26 @@ class Evaluator:
         """
 
         model_metrics = {}
-        model_metrics ['model_name'] = [model_name]
-        model_metrics['R2_train'] = [r2_score(self.y_train, self.y_pred_train)]
-        model_metrics['MAE_train'] = [MAE(self.y_train, self.y_pred_train)]
-        model_metrics['RMSE_train'] = [RMSE(self.y_train, self.y_pred_train)]
-        model_metrics['MAPE_train'] = [MAPE(self.y_train, self.y_pred_train)]
-        model_metrics['sMAPE_train'] = [self.smape(test= False)]
+        model_metrics["model_name"] = [model_name]
+        model_metrics["R2_train"] = [r2_score(self.y_train, self.y_pred_train)]
+        model_metrics["MAE_train"] = [MAE(self.y_train, self.y_pred_train)]
+        model_metrics["RMSE_train"] = [RMSE(self.y_train, self.y_pred_train)]
+        model_metrics["MAPE_train"] = [MAPE(self.y_train, self.y_pred_train)]
+        model_metrics["sMAPE_train"] = [self.smape(test=False)]
 
-        model_metrics['R2_test'] = [r2_score(self.y_test, self.y_pred_test)]
-        model_metrics['MAE_test'] = [MAE(self.y_test, self.y_pred_test)]
-        model_metrics['RMSE_test'] = [RMSE(self.y_test, self.y_pred_test)]
-        model_metrics['MAPE_test'] = [MAPE(self.y_test, self.y_pred_test)]
-        model_metrics['sMAPE_test'] = [self.smape(test= True)]
+        model_metrics["R2_test"] = [r2_score(self.y_test, self.y_pred_test)]
+        model_metrics["MAE_test"] = [MAE(self.y_test, self.y_pred_test)]
+        model_metrics["RMSE_test"] = [RMSE(self.y_test, self.y_pred_test)]
+        model_metrics["MAPE_test"] = [MAPE(self.y_test, self.y_pred_test)]
+        model_metrics["sMAPE_test"] = [self.smape(test=True)]
 
         model_metrics_df = pd.DataFrame(model_metrics)
 
-        global_metrics = pd.read_csv('./Results-Graphs/model_metrics.csv')
-        global_metrics = pd.concat([global_metrics, model_metrics_df], ignore_index=True)
-        global_metrics.to_csv('./Results-Graphs/model_metrics.csv', index= False)
+        global_metrics = pd.read_csv("./Results-Graphs/model_metrics.csv")
+        global_metrics = pd.concat(
+            [global_metrics, model_metrics_df], ignore_index=True
+        )
+        global_metrics.to_csv("./Results-Graphs/model_metrics.csv", index=False)
 
         print(global_metrics)
         print(r2_score(self.y_test, self.y_pred_test))
@@ -126,5 +136,3 @@ class Evaluator:
         explainer = shap.Explainer(self.predict_fn, distances)
         shap_values = explainer.shap_values(self.X_test)
         return shap_values
-
-        

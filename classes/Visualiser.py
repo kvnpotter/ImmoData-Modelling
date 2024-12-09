@@ -9,17 +9,25 @@ import shap
 
 # Classes
 
+
 class EDA_Visualiser:
     """
     A class to allow construction of data visualisation for some EDA.
     """
+
     def __init__(self, data: pd.DataFrame) -> None:
         """
         Construct an instance of EDA_Visualiser
         """
         self.data = data
 
-    def correlation_heatmap(self, columns: list[str], title: str, method: str = 'spearman', view: bool = False) -> None:
+    def correlation_heatmap(
+        self,
+        columns: list[str],
+        title: str,
+        method: str = "spearman",
+        view: bool = False,
+    ) -> None:
         """
         Construct a heatmap of correlations.
 
@@ -29,22 +37,23 @@ class EDA_Visualiser:
         : param view: bool: Show the created plot or not, default False.
         """
         data_cols = self.data[columns]
-        correlations = data_cols.corr(method= method)
-        sns.heatmap(correlations, annot= True, cmap= 'coolwarm')
+        correlations = data_cols.corr(method=method)
+        sns.heatmap(correlations, annot=True, cmap="coolwarm")
         plt.title(title)
         plt.savefig(f"./Results-Graphs/{title}.png", dpi=300)
         if view == True:
             plt.show()
 
+
 class PCA_Visualiser:
     """
     A class to allow construction of data visualisation for useful visualisations when performing PCA.
     """
-    
-    def __init__(self, pca: PCA,  data: pd.DataFrame) -> None:
+
+    def __init__(self, pca: PCA, data: pd.DataFrame) -> None:
         """
         Create an instance of PCA_Visualiser.
-        
+
         : param data: pd.DataFrame: Dataframe containing data
         """
         self.pca = pca
@@ -61,7 +70,11 @@ class PCA_Visualiser:
 
         def broken_stick(n_components, total_components):
             """Calculate broken-stick model values for n_components."""
-            return [np.sum([1 / k for k in range(i, total_components + 1)]) / total_components for i in range(1, n_components + 1)]
+            return [
+                np.sum([1 / k for k in range(i, total_components + 1)])
+                / total_components
+                for i in range(1, n_components + 1)
+            ]
 
         n_components = len(self.pca.explained_variance_ratio_)
 
@@ -77,12 +90,22 @@ class PCA_Visualiser:
 
         # Step 6: Plot Results
         plt.figure(figsize=(8, 5))
-        plt.plot(range(1, n_components + 1), explained_variance, 'o-', label='Observed Variance')
-        plt.plot(range(1, n_components + 1), broken_stick_values, 'o-', label='Broken-Stick Model')
-        plt.axhline(y=0, color='black', linestyle='--', linewidth=0.7)
-        plt.xlabel('Principal Component')
-        plt.ylabel('Proportion of Variance Explained')
-        plt.title('Broken Stick Model vs Observed Eigenvalues')
+        plt.plot(
+            range(1, n_components + 1),
+            explained_variance,
+            "o-",
+            label="Observed Variance",
+        )
+        plt.plot(
+            range(1, n_components + 1),
+            broken_stick_values,
+            "o-",
+            label="Broken-Stick Model",
+        )
+        plt.axhline(y=0, color="black", linestyle="--", linewidth=0.7)
+        plt.xlabel("Principal Component")
+        plt.ylabel("Proportion of Variance Explained")
+        plt.title("Broken Stick Model vs Observed Eigenvalues")
         plt.legend()
         plt.grid()
 
@@ -92,11 +115,15 @@ class PCA_Visualiser:
             plt.show()
 
         # Print components that exceed broken stick model
-        print("\
-        Components exceeding broken stick model:")
+        print(
+            "\
+        Components exceeding broken stick model:"
+        )
         for i in range(n_components):
             if self.pca.explained_variance_ratio_[i] > broken_stick_values[i]:
-                print(f"PC{i+1}: Observed = {self.pca.explained_variance_ratio_[i]:.3f}, Broken Stick = {broken_stick_values[i]:.3f}")
+                print(
+                    f"PC{i+1}: Observed = {self.pca.explained_variance_ratio_[i]:.3f}, Broken Stick = {broken_stick_values[i]:.3f}"
+                )
 
     def loadings(self, loadings: pd.DataFrame, view: bool = False) -> None:
         """
@@ -107,8 +134,8 @@ class PCA_Visualiser:
         """
 
         plt.figure(figsize=(10, 8))
-        sns.heatmap(loadings, annot=True, cmap='coolwarm', center=0)
-        plt.title('PCA Component Loadings')
+        sns.heatmap(loadings, annot=True, cmap="coolwarm", center=0)
+        plt.title("PCA Component Loadings")
 
         plt.savefig(f"./Results-Graphs/Loadings.png", dpi=300)
 
@@ -128,7 +155,9 @@ class PCA_Visualiser:
 
         # Plot the heatmap
         plt.figure(figsize=(8, 6))
-        sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f", cbar=True)
+        sns.heatmap(
+            correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f", cbar=True
+        )
         plt.title("Spearman Correlation Heatmap", fontsize=16)
         plt.tight_layout()
 
@@ -136,6 +165,7 @@ class PCA_Visualiser:
 
         if view == True:
             plt.show()
+
 
 class SHAP_Visualiser:
     """
