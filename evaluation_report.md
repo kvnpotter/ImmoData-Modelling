@@ -30,13 +30,10 @@ Gower_CV_model_eval = Evaluator(model= Gower_CV_model.model,
 Gower_CV_model_eval.model_metrics('Raw_Numericals+PostalCode+CV+Gow')
 ```
 
+## 2. Model metrics
 
-a code snippet of the model instantiation (to see which model it is, what parameters,...)
-MAE (on training/test)
-RMSE (on training/test)
-R2 (on training/test)
-MAPE (on training/test)
-sMAPE (on training/test)
+![evaluation_metrics](./Results-Graphs/table.jpg)
+
 The list of features you've used and how you got it (to quickly understand if you've done data leakage)
 Accuracy computing procedure (on a test set? What split %, 80/20, 90/10, 50/50? k-fold cross?)
 Efficiency (training and inference time). The fastest the best (sustainability).
