@@ -23,51 +23,51 @@ Specifications for the final dataset are:
 
 The following part of the README focuses on structure of the code and how modelling was carried out
 
-## Data preparation and feature selection
+### Data preparation and feature selection
 
-All steps for data preparation and feature selection are taken by instantiating a Preprocessor object and running appropriate methods.
-Methods for instances of Preprocessor class allow to load data, add income/tax variables, label and one-hot encode categorical variables, view correlations, calculate VIF, perform PCA (with appropriate visualisations), get datasets for X and y ready for modelling, calculate Gower distances and splitting + scaling the datasets in training and testing sets respectively.
+All steps for data preparation and feature selection are taken by instantiating a `Preprocessor()` object and running appropriate methods.
+Methods for instances of `Preprocessor` class allow to load data, add income/tax variables, label and one-hot encode categorical variables, view correlations, calculate VIF, perform PCA (with appropriate visualisations), get datasets for X and y ready for modelling, calculate Gower distances and splitting + scaling the datasets in training and testing sets respectively.
 
-Many preparation steps for feature selection and/or engineering were taken previously during the EDA part of this project.
+Many preparation steps for feature selection and/or engineering were taken previously during the EDA part of this project found [here](https://github.com/kvnpotter/ImmoData-EDA).
 Most notably, strongly correlated predictor variables, which were most correlated to the target, were decorrelated using PCA.
 Additionally, the dataset contained no remaining missing values, etc. 
 
 To replace the raw postal code data scraped from ImmoWeb (assuming this variable does not confer much information to the model, and does not easily allow extrapolation), data pertaining to tax information (at locality scale) was obtained from the Belgian government. Since many of the variables were correlated, only one (most strongly associated to price) was retained for model creation and testing.
 
-## Modelling real estate data
+### Modelling real estate data
 
-Modelling occurs by instantiating a Modeller object. Methods available for this class allow to model the data using KNN regression and a combination of following parameters:
-- n_neighbors : varying number of nearest neighbors to take into account
+Modelling occurs by instantiating a `Modeller()` object. Methods available for this class allow to model the data using KNN regression and a combination of following parameters:
+- n_neighbours : varying number of nearest neighbours to take into account
 - metric : which distance metric to use for NN calculation (Euclidean, cosine or Gower)
 - weights : which weighting to attribute to neighbors (uniform, inverste distance)
 
-Methods available for Modeller objects allow setting model parameters (including adding cross-validation grid search or not), getting the model (a method permitting to send the data to the appropriate model, with or without CV gridsearch, based on selected parameters).
+Methods available for `Modeller` objects allow setting model parameters (including adding cross-validation grid search or not), getting the model (a method permitting to send the data to the appropriate model, with or without CV gridsearch, based on selected parameters).
 
 CV gridsearch, using 5 CV folds and based on RMSE scoring was used for hyperparameter tuning.
 Gower distance was included in modelling, despite not being available natively in sklearn, due to the fact that Gower distance is assumed to be better suited to datasets mixing categorical and numerical data.
 
-## Model evaluation
+### Model evaluation
 
-For model evaluation, an object of Evaluator class is instantiated, allowing to calculate, and store, model evaluation metrics such as R2, MAE, RMSE, MAPE, etc.
+For model evaluation, an object of `Evaluator()` class is instantiated, allowing to calculate, and store, model evaluation metrics such as $R^2$, MAE, RMSE, MAPE, etc.
 
-The choice was made to exclude R2 adjusted, in favour of simple R2 since the number of observations in the dataset is much larger than the number of features.
+The choice was made to exclude adjusted $R^2$, in favour of simple $R^2$, since the number of observations in the dataset is much larger than the number of features.
 
-## Visualisation
+### Visualisation
 
-A number of visualiser classes were constructed to group all functionality pertaining to the building of graphs.
+A number of `visualiser` classes were constructed to group all functionality pertaining to the building of graphs.
 
-## Main
+### Main
 
-The main script contains all iterations of modelling (8 total) on a combination of parameters (using CV gridsearch) and different combinations of predictors.
+The `main.py` script contains all iterations of modelling (9 total) on a combination of parameters (using CV gridsearch) and different combinations of predictors.
 In particular:
 - Using the original postal code data vs. replacing it with tax data
 - Using the original (correlated) predictors at property level vs. observation scores on the first two axes of PCA on these variables
 
-The results of each iteration were automatically recorded in the ./Results-Graphs/model_metrics.csv file
+The results of each iteration were automatically recorded in the `./Results-Graphs/model_metrics.csv` file
 
-Finally, the script stores the best model (see evalutation_report.md) as a pickle file.
+Finally, the script stores the best model (see `evalutation_report.md`), and training data indices, as a pickle file.
 
-   ## **Installation-Environment setup**
+## **Installation-Environment setup**
 
 You can create a virtual environment for the script using venv.
 ```shell
@@ -99,11 +99,11 @@ The repository contains following files and directories
 - classes : contains separate modules for data preprocessing, modelling, evaluation and visualisation
 - evaluation_report.md : a report evaluating the selected model
 
-# Contributors 
+## **Contributors** 
 This project was completed by:
 1. [Kevin](https://github.com/kvnpotter)
 
-# **Timeline**
+## **Timeline**
 
 Start project: 2/12/2024 09:30
 End project: 9/12/2024 16:30
