@@ -54,12 +54,12 @@ with open("./Results-Graphs/best_knn_model_reduced.pkl", "wb") as f:
 
 ## 2. Model metrics
 
-
+![evaluation_metrics](./Results-Graphs/table.JPG)
 
 ## 3. Used features
 
 The features used to predict price include the following:
-- Mean taxable income per unit per locality (obj) : Data used to replace raw postal code, doesn't substantially improve model, but reduces possible further issues with extrapolation
+- Mean taxable income per unit per locality (float) : Data used to replace raw postal code, doesn't substantially improve model, but reduces possible further issues with extrapolation
 - Subtype of property (obj) : categorical, categories as defined on ImmoWeb
 - State of the building (obj) : categorical, categories as defined on ImmoWeb
 - 'Surface area of the plot of land', 'Number of rooms', 'Living Area', 'Number of facades' (float and int) : raw data from ImmoWeb, numerical data was not scaled since a Gower distance matrix was used in final modelling. Gower distance calculates distances feature by feature, therefore eliminating issues with scaling.
