@@ -54,7 +54,7 @@ with open("./Results-Graphs/best_knn_model_reduced.pkl", "wb") as f:
 
 ## 2. Model metrics
 
-![evaluation_metrics](./Results-Graphs/table.JPG)
+
 
 ## 3. Used features
 
