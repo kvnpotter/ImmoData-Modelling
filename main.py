@@ -2,7 +2,7 @@
 
 from classes.Preprocessor import DataPreprocessor
 from classes.Modelling import Modeller
-from classes.Visualiser import EDA_Visualiser, SHAP_Visualiser
+from classes.Visualiser import EDA_Visualiser, SHAP_Visualiser, R2_Visualiser, Residual_Visualiser
 from classes.Evaluation import Evaluator
 import pickle
 
@@ -302,22 +302,24 @@ import pickle
 #                                 y_test= dataset_8.y_test)
 # Gower_CV_model_eval.model_metrics('PCA+TaxVar+CV+Gow')
 
-## Model 2 - Selected as best model - perform SHAP analysis
+## Selected as best model
 ## Without PCA - 'Surface area of the plot of land', 'Number of rooms', 'Living Area', 'Number of facades'
 ## Categoricals as-is (Gower deals with automatically) - 'PostalCodes', 'Subtype of property', 'State of the building'
+## Limited price range 200,000€ to 600,000€, attempt to deal with overfitting
 ## Train - test split 0.8-0.2
 ## No scaling, based on distance matrix immediately
 ## GridSearch CV, Gower distance, uniform and inv. dist. weight
 ## 5 folds, neg RMSE scoring
-## best [n_neighbors= 17, metric= 'precomputed', weights= 'distance']
+## best [n_neighbors= 19, metric= 'precomputed', weights= 'distance']
 
 dataset_2 = DataPreprocessor()
 dataset_2.load_data("./Data/Clean_data.csv")
 dataset_2.add_mean_income()
+dataset_2.data_income = dataset_2.data_income[(dataset_2.data_income['Price'] >= 200000) & (dataset_2.data_income['Price'] <= 600000)]
 
 dataset_2.get_modelling_X(
     columns=[
-        "PostalCodes",
+        "Mean_income_taxunit",
         "Subtype of property",
         "State of the building",
         "Surface area of the plot of land",
@@ -331,11 +333,31 @@ dataset_2.get_modelling_y()
 dataset_2.calc_gower_dist()
 dataset_2.gower_train_test()
 
+training_indices = dataset_2.train_indices
+
+with open("./Results-Graphs/training_indices.pkl", "wb") as f:
+    pickle.dump(training_indices, f)
+
 Gower_CV_model = Modeller()
-Gower_CV_model.set_parameters(distance="Gower")
+Gower_CV_model.set_parameters(CV= False, k= 19, weight='distance', distance="Gower")
+
 Gower_CV_model.get_model(dataset_2.X_train, dataset_2.y_train)
 
 ## Save best model in pickle file
 
-with open("./Results-Graphs/best_knn_model.pkl", "wb") as f:
+with open("./Results-Graphs/best_knn_model_reduced.pkl", "wb") as f:
     pickle.dump(Gower_CV_model.model, f)
+
+Gower_CV_model_eval = Evaluator(model= Gower_CV_model.model,
+                                X_train= dataset_2.X_train,
+                                 X_test= dataset_2.X_test,
+                                 y_train = dataset_2.y_train,
+                                 y_test= dataset_2.y_test)
+Gower_CV_model_eval.model_metrics('Limited Dataset-neighbors-taxdata')
+
+#Gower_r2_vis = R2_Visualiser(max_n_neighbors= 40, model= Gower_CV_model, evaluator= Gower_CV_model_eval)
+#Gower_r2_vis.plot_r_squared(view= True)
+
+Gower_resid_vis = Residual_Visualiser(evaluator= Gower_CV_model_eval)
+Gower_resid_vis.plot_residuals(test= False, view= True)
+Gower_resid_vis.plot_residuals(test= True, view= True)

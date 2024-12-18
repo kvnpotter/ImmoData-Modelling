@@ -366,17 +366,17 @@ class DataPreprocessor:
 
         # Select 80% of the indices for training
         n_train = int(train_fraction * n_points)
-        train_indices = all_indices[:n_train]
+        self.train_indices = all_indices[:n_train]
 
         # The remaining 20% are for testing
         test_indices = all_indices[n_train:]
 
         y = self.modelling_data_y
-        self.y_train = y[train_indices]
+        self.y_train = y[self.train_indices]
         self.y_test = y[test_indices]
 
-        D = self.gowermat[:, train_indices]
-        self.X_train = D[train_indices]
+        D = self.gowermat[:, self.train_indices]
+        self.X_train = D[self.train_indices]
         self.X_test = D[test_indices]
 
     def split_scale_train_test(self) -> None:
