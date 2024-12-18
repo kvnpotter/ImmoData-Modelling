@@ -99,11 +99,11 @@ The repository contains following files and directories
 - classes : contains separate modules for data preprocessing, modelling, evaluation and visualisation
 - evaluation_report.md : a report evaluating the selected model
 
-# Contributors 
+## **Contributors** 
 This project was completed by:
 1. [Kevin](https://github.com/kvnpotter)
 
-# **Timeline**
+## **Timeline**
 
 Start project: 2/12/2024 09:30
 End project: 9/12/2024 16:30
