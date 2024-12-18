@@ -4,7 +4,7 @@
 
 ## **Introduction**
 
-This repo contains the results of the third project in a series aimed at completing a data science workflow from start (data collection) to finish (modelling using machine learning) during my AI and Data science bootcamp training at BeCode (Brussels, Belgium). The final goal is to create a machine learning model capable of predicting real estate prices in Belgium.
+This repo contains the results of the third project in a series aimed at completing a data science workflow from start (data collection) to finish (modelling using machine learning and deployment) during my AI and Data science bootcamp training at BeCode (Brussels, Belgium). The final goal is to create a machine learning model capable of predicting real estate prices in Belgium.
 
 The specific aims for this project are :
 1. Being able to apply a regression model in a real context - apply the assigned model, in this case : KNN regression
@@ -83,7 +83,7 @@ conda activate <my-env>
 Included in the repository is a cross-platform environment.yml file, allowing to create a copy of the one used for this project. The environment name is given in the first line of the file.
 ```shell
 conda env create -f environment.yml
-conda activate wikipedia_scraper_env
+conda activate ImmoEliza
 conda env list #verify the environment was installed correctly
 ```
 
